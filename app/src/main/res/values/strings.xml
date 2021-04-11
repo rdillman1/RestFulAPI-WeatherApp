@@ -2,7 +2,7 @@
     <string name="app_name">myFinalProject_weatherApp</string>
     <string-array name="setting_tabs">
         <item>Settings</item>
-        <item>Option 1</item>
+        <item>Change Location</item>
         <item>Option 2</item>
         <item>Logout</item>
 
