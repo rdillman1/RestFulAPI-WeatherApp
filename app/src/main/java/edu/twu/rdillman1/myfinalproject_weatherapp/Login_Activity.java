@@ -27,10 +27,15 @@ public class Login_Activity extends AppCompatActivity {
 private FirebaseAuth mAuth;
 private GoogleSignInClient mGoogleSignInClient;
 private int RC_SIGN_IN = 150;
+public String city;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_);
+
+        Bundle bundle = getIntent().getExtras();
+       city = bundle.getString("cityLocation");
+
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_ICON_ONLY);
 
@@ -89,6 +94,7 @@ private int RC_SIGN_IN = 150;
                                // FirebaseUser user = mAuth.getCurrentUser();
                                // updateUI(user);
                                 Intent mainIntent = new Intent(Login_Activity.this,MainActivity.class);
+                                mainIntent.putExtra("cityLocation",city);
                                 Login_Activity.this.startActivity(mainIntent);
                                 Login_Activity.this.finish();
                             } else {
