@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "145893464430",
+    "project_id": "myfinalproject-weatherapp",
+    "storage_bucket": "myfinalproject-weatherapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145893464430:android:2a6275fed632a788d1497f",
+        "android_client_info": {
+          "package_name": "edu.twu.rdillman1.myfinalproject_weatherapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145893464430-8v344iq96v72gfqudelffcjue8sp0s0r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwYtvGRrrNnH7robL6QmzB6BHocCTUF6c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145893464430-8v344iq96v72gfqudelffcjue8sp0s0r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
