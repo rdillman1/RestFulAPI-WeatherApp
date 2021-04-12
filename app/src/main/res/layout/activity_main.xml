@@ -83,4 +83,12 @@
         app:layout_constraintStart_toEndOf="@+id/maintext"
         app:layout_constraintTop_toBottomOf="@+id/Welcome" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="637dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_locationName" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

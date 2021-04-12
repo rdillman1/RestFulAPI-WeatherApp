@@ -22,8 +22,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,32 +53,56 @@ public class MainActivity extends AppCompatActivity  {
     Double currentLon;
     TextView tv_name;
     TextView tv_location;
+    String cityID ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+// Get city from Splash Screen
         Bundle bundle = getIntent().getExtras();
         String city = bundle.getString("cityLocation");
-       // Toast.makeText(getApplicationContext()," "+city, Toast.LENGTH_LONG).show();
+     //Get data from google auth
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
+        // Set ID for Location and name
         tv_name = findViewById(R.id.welcomeID);
         tv_location = findViewById(R.id.tv_locationName);
+        //set text
         tv_name.setText(user.getDisplayName());
         Spinner s = (Spinner) findViewById(R.id.settings);
        tv_location.setText(bundle.getString("cityLocation"));
-/*
-//Check permissions
-        if (Build.VERSION.SDK_INT >= 27 &&
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-        }
-// Get location
-    getLocation();*/
-//setting dropdown menu
+
+        // Instantiate the RequestQueue.
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        String url ="https://www.metaweather.com/api/location/search/?query=";
+//
+//// Request a string response from the provided URL.
+//        JsonArrayRequest jRequest = new JsonArrayRequest(Request.Method.GET, url+city,null, new Response.Listener<JSONArray>() {
+//            @Override
+//            public void onResponse(JSONArray response) {
+//
+//                try {
+//                    JSONObject cityInfo = response.getJSONObject(0);
+//                    cityID = cityInfo.getString("woeid");
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//  Toast.makeText(getApplicationContext(),cityID,Toast.LENGTH_LONG).show();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_LONG).show();
+//
+//            }
+//        });
+//        queue.add(jRequest);
+
+
+
+
+       //spinner class selections
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -76,18 +111,42 @@ public class MainActivity extends AppCompatActivity  {
                     case "Settings":
                         //do nothing
                         break;
+                        //LOGOUT CASE
                     case "Logout":
                         mAuth.signOut();
                         Intent loginIntent = new Intent(MainActivity.this,Spash_Activity.class);
                         MainActivity.this.startActivity(loginIntent);
                         MainActivity.this.finish();
                         break;
-                    case "Option 1":
-                        Intent testIntent = new Intent(MainActivity.this,Spash_Activity.class);
-                        MainActivity.this.startActivity(testIntent);
-                        MainActivity.this.finish();
+                        //GRAB CITY ID CASE
+                    case "Get City ID":
+                        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                        String url ="https://www.metaweather.com/api/location/search/?query=";
+
+// Request a string response from the provided URL.
+                        JsonArrayRequest jRequest = new JsonArrayRequest(Request.Method.GET, url+city,null, new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+
+                                try {
+                                    JSONObject cityData = response.getJSONObject(0);
+                                    cityID = cityData.getString("woeid");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(getApplicationContext(),cityID,Toast.LENGTH_LONG).show();
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+                        queue.add(jRequest);
                         break;
-                    case "Option 2":
+                        //CHANGE LOCATION CASE
+                    case "Change Location":
                         Toast.makeText(getApplicationContext(),"I am testing option 2",Toast.LENGTH_SHORT).show();
                 }
             }
@@ -98,37 +157,6 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
-
-
-
-
-
-
-    }
-/*
-    @SuppressLint("MissingPermission")
-    private void getLocation() {
-        try {
-            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,50,this);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        currentLon = location.getLongitude();
-        currentLat = location.getLatitude();
-        Toast.makeText(getApplicationContext()," "+ currentLat + currentLon,Toast.LENGTH_LONG).show();
-   try{
-       Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-       List<Address> addresses = geocoder.getFromLocation(currentLat, currentLon, 1);
-       String address = addresses.get(0).getLocality();
-       tv_location.setText(address);
-       Toast.makeText(getApplicationContext()," "+ address,Toast.LENGTH_LONG).show();
-   }catch (Exception e){
-       e.printStackTrace();
-   }
-    }*/
 }

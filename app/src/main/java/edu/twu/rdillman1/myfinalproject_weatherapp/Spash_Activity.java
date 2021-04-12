@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class Spash_Activity extends AppCompatActivity implements LocationListener{
-    private final int SPLASH_DISPLAY_LENGTH = 10000;
+    private final int SPLASH_DISPLAY_LENGTH = 12000;
     private FirebaseAuth mAuth;
     LocationManager locationManager;
     // private static final int TAKE_PHOTO_PERMISSION = 1;
@@ -80,13 +80,13 @@ public class Spash_Activity extends AppCompatActivity implements LocationListene
     public void onLocationChanged(@NonNull Location location) {
         currentLon = location.getLongitude();
         currentLat = location.getLatitude();
-        Toast.makeText(getApplicationContext()," "+ currentLat + currentLon,Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"Loading Location Services... ",Toast.LENGTH_LONG).show();
         try{
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(currentLat, currentLon, 1);
             String address = addresses.get(0).getLocality();
             city = address;
-            Toast.makeText(getApplicationContext()," "+ address,Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Checking Google authorization... ",Toast.LENGTH_LONG).show();
         }catch (Exception e){
             e.printStackTrace();
         }
