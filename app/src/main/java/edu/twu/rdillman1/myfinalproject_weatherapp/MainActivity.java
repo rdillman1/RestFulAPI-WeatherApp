@@ -16,6 +16,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -27,6 +29,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,32 +40,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-
+    //initialize weather service
+    WeatherDataService weatherDataService = new WeatherDataService(MainActivity.this);
     // Add code here to register the listener with the Location Manager to receive location updates
     LocationManager locationManager;
-   // private static final int TAKE_PHOTO_PERMISSION = 1;
+    // private static final int TAKE_PHOTO_PERMISSION = 1;
     LocationListener locationListener;
     Double currentLat;
     Double currentLon;
     TextView tv_name;
     TextView tv_location;
-    String cityID ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-// Get city from Splash Screen
         Bundle bundle = getIntent().getExtras();
         String city = bundle.getString("cityLocation");
-     //Get data from google auth
+// Get city from Splash Screen
+        //Get data from google auth
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         // Set ID for Location and name
@@ -71,83 +75,76 @@ public class MainActivity extends AppCompatActivity  {
         //set text
         tv_name.setText(user.getDisplayName());
         Spinner s = (Spinner) findViewById(R.id.settings);
-       tv_location.setText(bundle.getString("cityLocation"));
+        tv_location.setText(bundle.getString("cityLocation"));
 
-        // Instantiate the RequestQueue.
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        String url ="https://www.metaweather.com/api/location/search/?query=";
-//
-//// Request a string response from the provided URL.
-//        JsonArrayRequest jRequest = new JsonArrayRequest(Request.Method.GET, url+city,null, new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
-//
-//                try {
-//                    JSONObject cityInfo = response.getJSONObject(0);
-//                    cityID = cityInfo.getString("woeid");
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//  Toast.makeText(getApplicationContext(),cityID,Toast.LENGTH_LONG).show();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_LONG).show();
-//
-//            }
-//        });
-//        queue.add(jRequest);
+//Toast.makeText(getApplicationContext(),city,Toast.LENGTH_LONG).show();
+
+// implements weather
 
 
-
-
-       //spinner class selections
+//spinner class selections
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selected = parent.getItemAtPosition(position).toString();
-                switch (selected){
+                switch (selected) {
                     case "Settings":
                         //do nothing
                         break;
-                        //LOGOUT CASE
+                    //LOGOUT CASE
                     case "Logout":
                         mAuth.signOut();
-                        Intent loginIntent = new Intent(MainActivity.this,Spash_Activity.class);
+                        Intent loginIntent = new Intent(MainActivity.this, Spash_Activity.class);
                         MainActivity.this.startActivity(loginIntent);
                         MainActivity.this.finish();
                         break;
-                        //GRAB CITY ID CASE
+                    //GRAB CITY ID CASE
                     case "Get City ID":
-                        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                        String url ="https://www.metaweather.com/api/location/search/?query=";
-
-// Request a string response from the provided URL.
-                        JsonArrayRequest jRequest = new JsonArrayRequest(Request.Method.GET, url+city,null, new Response.Listener<JSONArray>() {
+                        weatherDataService.getCityID(tv_location.getText().toString(), new WeatherDataService.VolleyResponseListener() {
                             @Override
-                            public void onResponse(JSONArray response) {
-
-                                try {
-                                    JSONObject cityData = response.getJSONObject(0);
-                                    cityID = cityData.getString("woeid");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                Toast.makeText(getApplicationContext(),cityID,Toast.LENGTH_LONG).show();
+                            public void onError(String message) {
+                                Toast.makeText(getApplicationContext(), "City ID something failed", Toast.LENGTH_LONG).show();
                             }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_LONG).show();
 
+                            @Override
+                            public void onResponse(String theCityID) {
+                                //did not work
+                                Toast.makeText(getApplicationContext(), "City ID for " + city + " is " + theCityID, Toast.LENGTH_LONG).show();
                             }
                         });
-                        queue.add(jRequest);
+                        s.setSelection(0);
                         break;
-                        //CHANGE LOCATION CASE
+                    //CHANGE LOCATION CASE
                     case "Change Location":
-                        Toast.makeText(getApplicationContext(),"I am testing option 2",Toast.LENGTH_SHORT).show();
+                        s.setSelection(0);
+                        Intent change = new Intent(MainActivity.this,change_Location.class);
+                        change.putExtra("cityLocation",city);
+                        MainActivity.this.startActivity(change);
+                        MainActivity.this.finish();
+                        break;
+                    case "Test Weather API":
+                        Toast.makeText(getApplicationContext(), "I am testing Find Weather By Date", Toast.LENGTH_SHORT).show();
+
+                        weatherDataService.getForcast("44418", new WeatherDataService.ForcastResponse() {
+                            @Override
+                            public void onError(String message) {
+                                Toast.makeText(getApplicationContext(),"soemthing went wrong",Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onResponse(WeatherModel weatherModel) {
+                                Toast.makeText(getApplicationContext(), weatherModel.toString(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        s.setSelection(0);
+                        break;
+                    case "Refresh":
+                        finish();
+                        startActivity(getIntent());
+                        s.setSelection(0);
+                        Toast.makeText(getApplicationContext(), "Page Refreshed", Toast.LENGTH_LONG).show();
+                        break;
                 }
             }
 
@@ -156,7 +153,5 @@ public class MainActivity extends AppCompatActivity  {
 
             }
         });
-
     }
-
 }

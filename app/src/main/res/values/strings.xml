@@ -1,9 +1,17 @@
 <resources>
     <string name="app_name">myFinalProject_weatherApp</string>
     <string-array name="setting_tabs">
-        <item>Settings</item>
+        <item>
+            Menu
+        </item>
         <item>Change Location</item>
         <item>Get City ID</item>
+        <item>
+        Test weather API
+      </item>
+        <item>
+            Refresh
+        </item>
         <item>Logout</item>
 
     </string-array>

@@ -13,10 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:gravity="center_vertical"
+        android:paddingStart="8dp"
         android:text="Welcome, "
         android:textColor="#FFFFFF"
         android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/settings"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -28,7 +29,7 @@
         android:textColor="#FFFFFF"
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.034"
         app:layout_constraintStart_toEndOf="@+id/Welcome"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,27 +47,24 @@
 
     <Spinner
         android:id="@+id/settings"
-        android:layout_width="111dp"
-        android:layout_height="50dp"
+        android:layout_width="61dp"
+        android:layout_height="91dp"
         android:background="@color/white"
         android:entries="@array/setting_tabs"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeID" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/maintext"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:gravity="center_vertical"
+        android:paddingStart="8dp"
         android:text="Showing weather for: "
         android:textColor="#F6E127"
         android:textSize="17dp"
-        app:layout_constraintEnd_toStartOf="@+id/settings"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/settings"
         app:layout_constraintTop_toBottomOf="@+id/Welcome" />
 
     <TextView
@@ -78,17 +76,33 @@
         android:textAllCaps="true"
         android:textColor="#F6E127"
         android:textSize="17dp"
-        app:layout_constraintEnd_toStartOf="@+id/settings"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/maintext"
-        app:layout_constraintTop_toBottomOf="@+id/Welcome" />
+        app:layout_constraintTop_toBottomOf="@+id/welcomeID" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="0dp"
-        android:layout_height="637dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="410dp"
+        android:layout_height="649dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_locationName" />
+        app:layout_constraintTop_toBottomOf="@id/divider3" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/yella"
+        app:layout_constraintTop_toBottomOf="@+id/maintext"
+        tools:layout_editor_absoluteX="3dp" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@color/yella"
+        app:layout_constraintBottom_toTopOf="@+id/maintext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.737"
+        app:layout_constraintStart_toEndOf="@+id/settings"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeID" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
