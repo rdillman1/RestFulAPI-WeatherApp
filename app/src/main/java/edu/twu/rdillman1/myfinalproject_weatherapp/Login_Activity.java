@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -39,6 +41,10 @@ public String city;
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_ICON_ONLY);
 
+
+        Toast toast = Toast.makeText(getApplicationContext(),"Please login using google,\n to access Weather-Ways :)",Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -93,8 +99,9 @@ public String city;
                                 Log.d(null, "signInWithCredential:success");
                                // FirebaseUser user = mAuth.getCurrentUser();
                                // updateUI(user);
-                                Intent mainIntent = new Intent(Login_Activity.this,MainActivity.class);
-                                mainIntent.putExtra("cityLocation",city);
+                                Toast.makeText(getApplicationContext(),"Logging in, please wait... ",Toast.LENGTH_LONG).show();
+                                Intent mainIntent = new Intent(Login_Activity.this,Spash_Activity.class);
+                                //mainIntent.putExtra("cityLocation",city);
                                 Login_Activity.this.startActivity(mainIntent);
                                 Login_Activity.this.finish();
                             } else {

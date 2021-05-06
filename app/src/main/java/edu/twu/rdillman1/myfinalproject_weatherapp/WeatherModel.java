@@ -55,6 +55,27 @@ private int predictability;
                 ", predictability=" + predictability +
                 '}';
     }
+    public String toStringState() {
+        return  weather_state_name ;
+    }
+    public String toStringImage() {
+        return  weather_state_abbr ;
+    }
+    public Float toStringtemp() {
+        return  the_temp ;
+    }
+    public Float toStringHigh() {
+        return  max_temp ;
+    }
+    public Float toStringLow() {
+        return  min_temp ;
+    }
+    public Float toStringWind() {
+        return  wind_speed ;
+    }
+    public int toStringHumid() {
+        return  humidity ;
+    }
 
     public WeatherModel() {
     }

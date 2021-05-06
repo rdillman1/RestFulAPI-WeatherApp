@@ -19,6 +19,8 @@ import java.util.List;
 public class WeatherDataService {
     public static final String CITY_ID_QUERY ="https://www.metaweather.com/api/location/search/?query=";
     public static final String FORCAST_QUERY ="https://www.metaweather.com/api/location/";
+
+    public static final String BYDATE_QUERY ="https://www.metaweather.com/api/location/";
     Context context;
     String cityID="";
 //We have to wait for the volley to return something, callback was needed
@@ -105,4 +107,46 @@ public class WeatherDataService {
               //get each item from JSON array to place forcast.
       WeatherDataSingleton.getInstance(context).addToRequestQueue(jRequest);
   }
+    public void getByDate(String theCityID, String date, ForcastResponse forcastResponse){
+        String url = BYDATE_QUERY+theCityID+"/";//+date;
+     //  Toast.makeText(context,url,Toast.LENGTH_LONG).show();
+      // String result="";
+        List<WeatherModel> report = new ArrayList<>();
+
+        JsonObjectRequest jRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray bydate_weather_array = response.getJSONArray("consolidated_weather");
+                    //get item from array
+                    WeatherModel byDay = new WeatherModel();
+                    JSONObject day_from_api = (JSONObject) bydate_weather_array.get(0);
+                    byDay.setId(day_from_api.getInt("id"));
+                    byDay.setWeather_state_name(day_from_api.getString("weather_state_name"));
+                    byDay.setWeather_state_abbr(day_from_api.getString("weather_state_abbr"));
+                    byDay.setWind_direction_compass(day_from_api.getString("wind_direction_compass"));
+                    byDay.setCreated(day_from_api.getString("created"));
+                    byDay.setApplicable_date(day_from_api.getString("applicable_date"));
+                    byDay.setMin_temp(day_from_api.getLong("min_temp"));
+                    byDay.setMax_temp(day_from_api.getLong("max_temp"));
+                    byDay.setThe_temp(day_from_api.getLong("the_temp"));
+                    byDay.setWind_speed(day_from_api.getLong("wind_speed"));
+                    byDay.setAir_pressure(day_from_api.getLong("air_pressure"));
+                    byDay.setHumidity(day_from_api.getInt("humidity"));
+                    byDay.setVisibility(day_from_api.getLong("visibility"));
+                    byDay.setPredictability(day_from_api.getInt("predictability"));
+                    forcastResponse.onResponse(byDay);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        //get each item from JSON array to place forcast.
+        WeatherDataSingleton.getInstance(context).addToRequestQueue(jRequest);
+    }
 }
