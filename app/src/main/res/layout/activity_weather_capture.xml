@@ -10,7 +10,7 @@
     android:id="@id/image"
 
     <TextView
-        android:id="@+id/cityTitle"
+        android:id="@+id/genieTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="95dp"
@@ -29,7 +29,7 @@
         android:layout_weight="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cityTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/genieTitle" />
 
     <Button
         android:id="@+id/save"

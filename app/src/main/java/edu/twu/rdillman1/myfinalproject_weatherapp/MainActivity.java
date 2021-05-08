@@ -189,20 +189,24 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.finish();
                         break;
                     //GRAB CITY ID CASE
-                    case "Get City ID":
-                        weatherDataService.getCityID(tv_location.getText().toString(), new WeatherDataService.VolleyResponseListener() {
-                            @Override
-                            public void onError(String message) {
-                                Toast.makeText(getApplicationContext(), "City ID something failed", Toast.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void onResponse(String theCityID) {
-
-                                Toast.makeText(getApplicationContext(), "City ID for " + city + " is " + theCityID, Toast.LENGTH_LONG).show();
-                            }
-                        });
+                    case "Weather Genie":
+//                        weatherDataService.getCityID(tv_location.getText().toString(), new WeatherDataService.VolleyResponseListener() {
+//                            @Override
+//                            public void onError(String message) {
+//                                Toast.makeText(getApplicationContext(), "City ID something failed", Toast.LENGTH_LONG).show();
+//                            }
+//
+//                            @Override
+//                            public void onResponse(String theCityID) {
+//
+//                                Toast.makeText(getApplicationContext(), "City ID for " + city + " is " + theCityID, Toast.LENGTH_LONG).show();
+//                            }
+//                        });
                         s.setSelection(0);
+                        Intent genie = new Intent(MainActivity.this,weather_genie.class);
+                        genie.putExtra("cityLocation",city);
+                        MainActivity.this.startActivity(genie);
+                        MainActivity.this.finish();
                         break;
                     //CHANGE LOCATION CASE
                     case "Change Location":
