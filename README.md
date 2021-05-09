@@ -54,16 +54,16 @@ Unfortunately I could not get this to work due to the fact the Json array is una
 After some time I was able to adjust the code enough to get it to work 
 added some cleaning to the login activity and wahlah
 
-## Functionality
-# Splash Screen
+# Functionality
+## Splash Screen
 On launch user is met with splash screen 
 in the splash screen the app will request user to allow location services. 
 Then app checks if user has logged in before.. if so the mainactivity, if not login activity. 
-# Login activity
+## Login activity
 The user opens a sscreen and is pushed to login with google account (shoudl work with university email)
 upon finishing met with three toasts (logging in/checking location/ google auth)
 The splash screen will play again as a loading screen (this is to allow time to buffer and push the location data to the web service)
-# Main Activity
+## Main Activity
 This is the meat of the app. 
 This is what pushes to the web service metaweather.com
 In this activity I am on a weatherDataService.java class that handles more of the Json requests so we can keep it simple here. 
@@ -79,33 +79,46 @@ This bad guy is like a dropdown menu!
 
 Providing an array on options for the user to choose from. 
 
-# Change Location Activity
+## Change Location Activity
 
 This activity allows the user to select another city and on confirming will launch the main activty with a new cities weather!
 pretty simple I just use intents to push data back and forth. 
 
-# Weather By Data 
+## Weather By Data 
 This activity is just like main activity all the basic understanding, except the URL the JSON array is being pulled from is incorporating a date!
 This is a fairly straightforward change but Doesnt work due to the array being unamed on we web service side. 
 
-# Refresh
+## Refresh
 This is a neat thing i learned. This is a runnable that refreshes the contents on the app. 
 Allowing the user to get updated info from meta weather on the users terms!
 pretty cool 
 
-# logout
+## logout
 This allows the user ot logotu of their google account be sent back to splash and have a chance to log in again! 
 
-# Weather capture
+## Weather capture
 This is a fun little add on that allows the user to access the camera and capture the mood outside! 
 See if it compares to the weather on their app! 
 This uses basic bitmap and permissions requests. 
 
-# Weather Genie
+## Weather Genie
 This is another little fun add-on. 
 This incororates shake method to allow you to imatate a shake movement to get a response from the genie. 
 The responses re very magic eight ball oriented but with some weather based twists in there as well. 
 implemented with a sensorEventListener method. 
+
+# Learning outcomes
+I learned so many things from this project. 
+Learned how to implement a menu and have each item push to a new activity or do something
+learned how to use web services and push to text views.
+Learned how to utilize camera. 
+Learned how to activate action using shake on my genie activity
+Learned how to user Firebase to authorize Google logins!
+Learned how to bring in Google data to the app (like name)
+Learned about singletons!
+Learned how to use a dataservice!
+Learned how to implement a gif, and create a loading screen
+Learned how to refresh a page in the app. 
 
 
 
